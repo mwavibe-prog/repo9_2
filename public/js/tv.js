@@ -22,7 +22,7 @@ function connect() {
   ws = new WebSocket(`${proto}://${location.host}`);
 
   ws.onopen = () => {
-    ws.send(JSON.stringify({ type: 'createRoom' }));
+    ws.send(JSON.stringify({ type: 'createRoom', origin: location.origin }));
   };
 
   ws.onmessage = (e) => {

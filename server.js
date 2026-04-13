@@ -178,7 +178,10 @@ wss.on('connection', (ws) => {
         currentRoom = room;
         role = 'tv';
         room.tvClients.add(ws);
-        const joinUrl = `${BASE_URL}/phone.html?room=${room.code}`;
+        // Use the origin sent by the TV client so the QR code always
+        // points to the correct server (works on localhost AND production)
+        const origin = msg.origin || BASE_URL;
+        const joinUrl = `${origin}/phone.html?room=${room.code}`;
         QRCode.toDataURL(joinUrl, {
           width: 280, margin: 2,
           color: { dark: '#000000', light: '#ffffff' },
