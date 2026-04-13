@@ -24,6 +24,9 @@ body {
   height: 50px;
   width: auto;
   object-fit: contain;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 6px 10px;
 }
 
 /* ── Join Screen ─────────────────────────────────────────────────── */
