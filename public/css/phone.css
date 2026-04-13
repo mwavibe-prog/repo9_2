@@ -8,7 +8,7 @@ body {
   overflow-x: hidden;
   -webkit-user-select: none;
   user-select: none;
-  touch-action: manipulation;
+  touch-action: none;
 }
 
 /* ── Phone logos ──────────────────────────────────────────────────── */
@@ -114,7 +114,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 10px 5px;
+  padding: 6px 5px;
 }
 
 /* Info bar */
@@ -126,7 +126,7 @@ body {
   padding: 8px 12px;
   background: #16213e;
   border-radius: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-size: 1rem;
 }
 
@@ -142,65 +142,17 @@ body {
   font-size: 1.2rem;
 }
 
-/* Preview area */
-.preview-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 10px;
-  margin-bottom: 8px;
-  width: 100%;
-}
-
-.preview-label {
-  font-size: 0.95rem;
-  color: #aaa;
-}
-
-#preview-canvas {
-  border-radius: 8px;
-}
-
-/* Game board canvas */
+/* Game board canvas - the main interaction area */
 #phone-board-canvas {
-  border-radius: 8px;
-  margin-bottom: 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
   max-width: 100%;
+  touch-action: none;
+  cursor: grab;
 }
 
-/* Column drop buttons - THE MAIN CONTROLS */
-.drop-buttons {
-  display: flex;
-  gap: 6px;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 12px;
-}
-
-.drop-btn {
-  flex: 1;
-  font-size: 1.4rem;
-  padding: 18px 0;
-  border-radius: 14px;
-  border: 3px solid #4CAF50;
-  background: #1a3a1a;
-  color: #4CAF50;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.1s;
-}
-
-.drop-btn:active {
-  background: #4CAF50;
-  color: #fff;
-  transform: scale(0.95);
-}
-
-.drop-btn.disabled {
-  border-color: #555;
-  color: #555;
-  background: #1a1a2e;
+#phone-board-canvas:active {
+  cursor: grabbing;
 }
 
 /* Action buttons */
@@ -208,8 +160,8 @@ body {
   display: flex;
   gap: 10px;
   width: 100%;
-  max-width: 400px;
-  margin-bottom: 12px;
+  max-width: 420px;
+  margin-bottom: 8px;
 }
 
 .action-btn {
@@ -245,7 +197,7 @@ body {
   border-radius: 12px;
   padding: 10px 14px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
 .legend h3 {
