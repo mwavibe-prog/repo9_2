@@ -136,6 +136,22 @@ body {
   font-size: 1.1rem;
 }
 
+.info-bar .timer-display {
+  color: #6dd3f5;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.timer-urgent {
+  color: #FF5555 !important;
+  animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 1; }
+  to   { opacity: 0.5; }
+}
+
 .info-bar .score-display {
   color: #FFD700;
   font-weight: bold;

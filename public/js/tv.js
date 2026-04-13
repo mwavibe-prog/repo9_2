@@ -1,5 +1,5 @@
 /**
- * TV Display - Connects to server, shows all player boards on one canvas
+ * TV Display - All player boards, timer, leaderboard, sounds
  */
 
 const canvas = document.getElementById('game-canvas');
@@ -7,10 +7,16 @@ const ctx = canvas.getContext('2d');
 const renderer = new FrogRenderer(canvas);
 
 let roomCode = null;
-let players = []; // [{ id, name, state }]
+let players = [];
 let ws = null;
+let timeLeft = 90;
+let lastTickSec = -1;
+let roundEnded = false;
 
-// ── WebSocket connection ──────────────────────────────────────────────
+// Init sounds on first user interaction with the page
+document.addEventListener('click', () => { sfx.init(); sfx.resume(); }, { once: true });
+
+// ── WebSocket ──
 function connect() {
   const proto = location.protocol === 'https:' ? 'wss' : 'ws';
   ws = new WebSocket(`${proto}://${location.host}`);
@@ -26,26 +32,42 @@ function connect() {
         roomCode = msg.code;
         document.getElementById('room-code-display').textContent = msg.code;
         document.getElementById('corner-code').textContent = msg.code;
-        // QR code
-        if (msg.qrCode) {
-          document.getElementById('qr-code').src = msg.qrCode;
-        }
-        // Join URL
-        if (msg.joinUrl) {
-          document.getElementById('join-url').textContent = msg.joinUrl;
-        }
+        if (msg.qrCode) document.getElementById('qr-code').src = msg.qrCode;
+        if (msg.joinUrl) document.getElementById('join-url').textContent = msg.joinUrl;
         break;
 
       case 'gameUpdate':
         players = msg.players;
-        if (players.length > 0) {
-          showGameArea();
-        }
+        if (msg.timeLeft !== undefined) timeLeft = msg.timeLeft;
+        if (players.length > 0) showGameArea();
         break;
 
       case 'playerList':
         updatePlayerList(msg.players);
         updateLeaderboard(msg.players);
+        break;
+
+      case 'timer':
+        timeLeft = msg.timeLeft;
+        updateTimerDisplay();
+        handleTVTimerTick();
+        break;
+
+      case 'roundStart':
+        timeLeft = msg.duration;
+        roundEnded = false;
+        lastTickSec = -1;
+        document.getElementById('new-round-btn').style.display = 'none';
+        sfx.init(); sfx.resume(); sfx.playRoundStart();
+        break;
+
+      case 'roundEnd':
+        timeLeft = 0;
+        roundEnded = true;
+        updateTimerDisplay();
+        sfx.playTimeUp();
+        document.getElementById('new-round-btn').style.display = 'block';
+        if (msg.rankings) updateLeaderboard(msg.rankings);
         break;
 
       case 'error':
@@ -54,9 +76,29 @@ function connect() {
     }
   };
 
-  ws.onclose = () => {
-    setTimeout(connect, 2000);
-  };
+  ws.onclose = () => { setTimeout(connect, 2000); };
+}
+
+// ── New Round button ──
+document.getElementById('new-round-btn').addEventListener('click', () => {
+  if (ws && ws.readyState === 1) {
+    ws.send(JSON.stringify({ type: 'newRound' }));
+  }
+});
+
+function handleTVTimerTick() {
+  if (timeLeft === lastTickSec) return;
+  lastTickSec = timeLeft;
+  if (timeLeft <= 5 && timeLeft > 0) sfx.playUrgentTick();
+  else if (timeLeft <= 10 && timeLeft > 0) sfx.playTick();
+}
+
+function updateTimerDisplay() {
+  const el = document.getElementById('tv-timer-value');
+  el.textContent = timeLeft;
+  const container = document.getElementById('tv-timer');
+  if (timeLeft <= 10) container.classList.add('urgent');
+  else container.classList.remove('urgent');
 }
 
 function showGameArea() {
@@ -66,10 +108,9 @@ function showGameArea() {
 }
 
 function updatePlayerList(list) {
-  const countEl = document.getElementById('player-count');
-  const namesEl = document.getElementById('player-names');
-  countEl.textContent = `${list.length} player${list.length !== 1 ? 's' : ''} connected`;
-  namesEl.textContent = list.map(p => p.name).join(', ');
+  document.getElementById('player-count').textContent =
+    `${list.length} player${list.length !== 1 ? 's' : ''} connected`;
+  document.getElementById('player-names').textContent = list.map(p => p.name).join(', ');
 }
 
 function updateLeaderboard(list) {
@@ -84,42 +125,27 @@ function updateLeaderboard(list) {
   });
 }
 
-// ── Canvas sizing ─────────────────────────────────────────────────────
+// ── Canvas ──
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resizeCanvas);
 
-// ── Rendering loop ────────────────────────────────────────────────────
 function calculateLayout() {
   const count = players.length;
   if (count === 0) return { cols: 1, rows: 1, cellSize: 40 };
-
-  // Auto-grid: try to fit all boards nicely
   const screenW = canvas.width;
   const screenH = canvas.height;
-
   let bestCols = 1, bestRows = 1, bestCellSize = 0;
-
   for (let c = 1; c <= Math.min(count, 8); c++) {
     const r = Math.ceil(count / c);
-    const boardW = screenW / c;
-    const boardH = screenH / r;
-
-    // Each board: COLS cells wide, ROWS cells tall + header
     const headerH = 70;
-    const cellW = boardW / COLS;
-    const cellH = (boardH - headerH) / ROWS;
-    const cellSize = Math.floor(Math.min(cellW, cellH));
-
-    if (cellSize > bestCellSize) {
-      bestCellSize = cellSize;
-      bestCols = c;
-      bestRows = r;
-    }
+    const cellW = (screenW / c) / COLS;
+    const cellH = ((screenH / r) - headerH) / ROWS;
+    const cs = Math.floor(Math.min(cellW, cellH));
+    if (cs > bestCellSize) { bestCellSize = cs; bestCols = c; bestRows = r; }
   }
-
   return { cols: bestCols, rows: bestRows, cellSize: Math.max(20, bestCellSize) };
 }
 
@@ -128,11 +154,7 @@ function render() {
   ctx.fillStyle = '#0a0a1a';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  if (players.length === 0) {
-    // Nothing to draw yet
-    requestAnimationFrame(render);
-    return;
-  }
+  if (players.length === 0) { requestAnimationFrame(render); return; }
 
   const layout = calculateLayout();
   const headerHeight = Math.min(70, layout.cellSize * 1.2);
@@ -140,11 +162,8 @@ function render() {
   players.forEach((player, i) => {
     const gridCol = i % layout.cols;
     const gridRow = Math.floor(i / layout.cols);
-
     const boardW = COLS * layout.cellSize;
     const boardH = ROWS * layout.cellSize + headerHeight;
-
-    // Center boards in their allocated space
     const slotW = canvas.width / layout.cols;
     const slotH = canvas.height / layout.rows;
     const ox = gridCol * slotW + (slotW - boardW) / 2;
@@ -155,26 +174,23 @@ function render() {
     renderer.offsetY = oy;
     renderer.headerHeight = headerHeight;
 
-    renderer.drawBoard(player.state, player.name);
+    renderer.drawBoard(player.state, player.name, timeLeft);
 
-    // Spawn animations for merge events
     if (player.state.mergeEvents) {
       player.state.mergeEvents.forEach(evt => {
-        renderer.spawnParticles(evt.col, evt.row, evt.toTier, 15);
+        renderer.spawnParticles(evt.col, evt.row, evt.toTier, 18);
         renderer.spawnScorePopup(evt.col, evt.row, evt.score, evt.chain);
       });
       player.state.mergeEvents = [];
     }
   });
 
-  // Draw particles and popups on top
   renderer.drawParticles();
   renderer.drawScorePopups();
-
   requestAnimationFrame(render);
 }
 
-// ── Start ─────────────────────────────────────────────────────────────
+// ── Start ──
 resizeCanvas();
 connect();
 requestAnimationFrame(render);
