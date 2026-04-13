@@ -15,16 +15,27 @@
       <img src="images/weeswares-logo.png" alt="WeesWares" class="phone-logo">
     </div>
     <h1>Frog Drop</h1>
-    <p class="subtitle">Enter the room code shown on the TV</p>
 
-    <label for="name-input">Your Name</label>
-    <input type="text" id="name-input" placeholder="e.g. Grandma" maxlength="16" autocomplete="off">
+    <!-- Shown when joining via QR code (room code already known) -->
+    <div id="qr-join" style="display:none;">
+      <p class="subtitle">You're joining the game!</p>
+      <p class="room-badge">Room: <span id="qr-room-code"></span></p>
+      <label for="name-input-qr">Enter Your Name</label>
+      <input type="text" id="name-input-qr" placeholder="e.g. Grandma" maxlength="16" autocomplete="off" autofocus>
+      <button id="join-btn-qr" class="join-btn-big">Join Game</button>
+      <p id="join-error-qr" class="join-error"></p>
+    </div>
 
-    <label for="room-code-input">Room Code</label>
-    <input type="text" id="room-code-input" placeholder="ABCD" maxlength="4" autocomplete="off">
-
-    <button id="join-btn">Join Game</button>
-    <p id="join-error"></p>
+    <!-- Shown when opening page without QR code (manual entry) -->
+    <div id="manual-join">
+      <p class="subtitle">Enter the room code shown on the TV</p>
+      <label for="name-input">Your Name</label>
+      <input type="text" id="name-input" placeholder="e.g. Grandma" maxlength="16" autocomplete="off">
+      <label for="room-code-input">Room Code</label>
+      <input type="text" id="room-code-input" placeholder="ABCD" maxlength="4" autocomplete="off">
+      <button id="join-btn">Join Game</button>
+      <p id="join-error" class="join-error"></p>
+    </div>
   </div>
 
   <!-- Game Screen -->

@@ -23,34 +23,53 @@ let cellSize = 60;
 let boardOffsetY = 0;
 let animFrameId = null;
 
-// ── Auto-fill room code from URL ──
+// ── Detect QR-based join (room code in URL) ──
 const urlParams = new URLSearchParams(window.location.search);
 const urlRoom = urlParams.get('room');
+let activeErrorEl = 'join-error';
+
 if (urlRoom) {
-  document.getElementById('room-code-input').value = urlRoom.toUpperCase();
+  // QR join mode: show simplified screen
+  document.getElementById('manual-join').style.display = 'none';
+  document.getElementById('qr-join').style.display = 'block';
+  document.getElementById('qr-room-code').textContent = urlRoom.toUpperCase();
+  activeErrorEl = 'join-error-qr';
+
+  document.getElementById('join-btn-qr').addEventListener('click', joinViaQR);
+  document.getElementById('name-input-qr').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') joinViaQR();
+  });
+} else {
+  // Manual join mode
+  document.getElementById('qr-join').style.display = 'none';
+  document.getElementById('manual-join').style.display = 'block';
+
+  document.getElementById('join-btn').addEventListener('click', joinManual);
+  document.getElementById('room-code-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') joinManual();
+  });
 }
 
-// ── Join Screen ──
-document.getElementById('join-btn').addEventListener('click', joinGame);
-document.getElementById('room-code-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') joinGame();
-});
+function joinViaQR() {
+  const name = document.getElementById('name-input-qr').value.trim() || 'Player';
+  const code = urlRoom.toUpperCase().trim();
+  if (code.length !== 4) { showError('Invalid room code in link'); return; }
+  playerName = name;
+  sfx.init(); sfx.resume();
+  connectToServer(code, name);
+}
 
-function joinGame() {
+function joinManual() {
   const name = document.getElementById('name-input').value.trim() || 'Player';
   const code = document.getElementById('room-code-input').value.trim().toUpperCase();
   if (code.length !== 4) { showError('Please enter the 4-letter room code from the TV'); return; }
   playerName = name;
-
-  // Init sound on user gesture
-  sfx.init();
-  sfx.resume();
-
+  sfx.init(); sfx.resume();
   connectToServer(code, name);
 }
 
 function showError(msg) {
-  document.getElementById('join-error').textContent = msg;
+  document.getElementById(activeErrorEl).textContent = msg;
 }
 
 // ── WebSocket ──
