@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Frog Drop - Play</title>
+  <link rel="stylesheet" href="css/phone.css">
+</head>
+<body>
+
+  <!-- Join Screen -->
+  <div id="join-screen">
+    <h1>Frog Drop</h1>
+    <p class="subtitle">Enter the room code shown on the TV</p>
+
+    <label for="name-input">Your Name</label>
+    <input type="text" id="name-input" placeholder="e.g. Grandma" maxlength="16" autocomplete="off">
+
+    <label for="room-code-input">Room Code</label>
+    <input type="text" id="room-code-input" placeholder="ABCD" maxlength="4" autocomplete="off">
+
+    <button id="join-btn">Join Game</button>
+    <p id="join-error"></p>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen">
+
+    <div class="info-bar">
+      <span class="player-name" id="display-name">Player</span>
+      <span class="score-display">Score: <span id="score-value">0</span></span>
+    </div>
+
+    <!-- Next frog preview -->
+    <div class="preview-area">
+      <span class="preview-label">Next:</span>
+      <canvas id="preview-canvas" width="60" height="60"></canvas>
+      <span class="preview-label">Then:</span>
+      <canvas id="preview-canvas-2" width="46" height="46"></canvas>
+    </div>
+
+    <!-- Mini board view -->
+    <canvas id="phone-board-canvas"></canvas>
+
+    <!-- Column drop buttons - BIG for elderly -->
+    <div class="drop-buttons" id="drop-buttons"></div>
+
+    <!-- Action buttons -->
+    <div class="action-buttons">
+      <button class="action-btn undo-btn" id="undo-btn">Undo</button>
+      <button class="action-btn restart-btn" id="restart-btn">Restart</button>
+    </div>
+
+    <!-- Frog evolution legend -->
+    <div class="legend">
+      <h3>Frog Legend</h3>
+      <div class="legend-row" id="legend-row"></div>
+    </div>
+  </div>
+
+  <!-- Game over overlay -->
+  <div class="game-over-overlay" id="game-over-overlay">
+    <h2>Game Over!</h2>
+    <p class="final-score" id="final-score">Score: 0</p>
+    <p class="best-score-display" id="best-score-display">Best: 0</p>
+    <button id="restart-overlay-btn">Play Again</button>
+  </div>
+
+  <script src="js/game-logic.js"></script>
+  <script src="js/frog-renderer.js"></script>
+  <script src="js/phone.js"></script>
+</body>
+</html>

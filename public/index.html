@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frog Drop - Multiplayer Puzzle Game</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a1a;
+      color: #e0e0e0;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { font-size: 3rem; color: #4CAF50; margin-bottom: 0.5rem; }
+    .subtitle { font-size: 1.3rem; color: #aaa; margin-bottom: 2rem; }
+    .cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .card {
+      background: #16213e;
+      border-radius: 20px;
+      padding: 40px 36px;
+      text-decoration: none;
+      color: #e0e0e0;
+      width: 280px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: 2px solid transparent;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+    .card.tv { border-color: #FFD700; }
+    .card.phone { border-color: #4CAF50; }
+    .card h2 { font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .card.tv h2 { color: #FFD700; }
+    .card.phone h2 { color: #4CAF50; }
+    .card p { font-size: 1rem; color: #aaa; line-height: 1.5; }
+    .card .icon { font-size: 3rem; margin-bottom: 12px; }
+    .how-to {
+      margin-top: 3rem;
+      max-width: 600px;
+      text-align: left;
+      background: #16213e;
+      border-radius: 16px;
+      padding: 24px 30px;
+    }
+    .how-to h3 { color: #FFD700; margin-bottom: 12px; font-size: 1.2rem; }
+    .how-to ol { padding-left: 20px; line-height: 2; color: #ccc; font-size: 1.05rem; }
+  </style>
+</head>
+<body>
+  <h1>Frog Drop</h1>
+  <p class="subtitle">A multiplayer puzzle game for everyone</p>
+
+  <div class="cards">
+    <a href="tv.html" class="card tv">
+      <div class="icon">&#128250;</div>
+      <h2>TV Screen</h2>
+      <p>Open this on the big screen. Creates a room and shows all players' boards.</p>
+    </a>
+    <a href="phone.html" class="card phone">
+      <div class="icon">&#128241;</div>
+      <h2>Phone Controller</h2>
+      <p>Open this on your phone. Enter the room code to join and play!</p>
+    </a>
+  </div>
+
+  <div class="how-to">
+    <h3>How to Play</h3>
+    <ol>
+      <li>Open the <strong>TV Screen</strong> on a large display</li>
+      <li>A 4-letter room code will appear</li>
+      <li>Each player opens <strong>Phone Controller</strong> on their phone</li>
+      <li>Enter the room code and your name to join</li>
+      <li>Tap a column number (1-5) to drop your frog</li>
+      <li>Match same-numbered frogs to merge them!</li>
+      <li>Higher merges score more points</li>
+    </ol>
+  </div>
+</body>
+</html>

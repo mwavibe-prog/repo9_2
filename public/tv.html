@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frog Drop - TV Screen</title>
+  <link rel="stylesheet" href="css/tv.css">
+</head>
+<body>
+
+  <!-- Lobby: shows room code, waiting for players -->
+  <div id="lobby">
+    <h1>Frog Drop</h1>
+    <p class="subtitle">Join with your phone!</p>
+    <div id="room-code-display">----</div>
+    <p id="player-count">Waiting for players...</p>
+    <p id="player-names"></p>
+  </div>
+
+  <!-- Game area: canvas showing all boards -->
+  <div id="game-area">
+    <div id="room-code-corner">Room: <span id="corner-code"></span></div>
+    <canvas id="game-canvas"></canvas>
+    <div id="leaderboard">
+      <h3>Leaderboard</h3>
+      <div id="lb-list"></div>
+    </div>
+  </div>
+
+  <script src="js/game-logic.js"></script>
+  <script src="js/frog-renderer.js"></script>
+  <script src="js/tv.js"></script>
+</body>
+</html>

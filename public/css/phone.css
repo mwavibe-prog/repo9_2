@@ -1,0 +1,309 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0a0a1a;
+  color: #e0e0e0;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* ── Join Screen ─────────────────────────────────────────────────── */
+#join-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+#join-screen h1 {
+  font-size: 2rem;
+  color: #4CAF50;
+  margin-bottom: 0.5rem;
+}
+
+#join-screen .subtitle {
+  font-size: 1.1rem;
+  color: #aaa;
+  margin-bottom: 2rem;
+}
+
+#join-screen label {
+  font-size: 1.3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #ccc;
+}
+
+#join-screen input {
+  font-size: 1.6rem;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 2px solid #4CAF50;
+  background: #16213e;
+  color: #fff;
+  text-align: center;
+  width: 80%;
+  max-width: 320px;
+  margin-bottom: 1rem;
+  outline: none;
+}
+
+#join-screen input::placeholder {
+  color: #666;
+}
+
+#room-code-input {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+}
+
+#join-btn {
+  font-size: 1.5rem;
+  padding: 16px 48px;
+  border-radius: 16px;
+  border: none;
+  background: #4CAF50;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  min-width: 200px;
+}
+
+#join-btn:active {
+  background: #388E3C;
+  transform: scale(0.97);
+}
+
+#join-error {
+  color: #F44336;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  min-height: 1.5rem;
+}
+
+/* ── Game Screen ─────────────────────────────────────────────────── */
+#game-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 10px 5px;
+}
+
+/* Info bar */
+.info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  background: #16213e;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.info-bar .player-name {
+  color: #4CAF50;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.info-bar .score-display {
+  color: #FFD700;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Preview area */
+.preview-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.preview-label {
+  font-size: 0.95rem;
+  color: #aaa;
+}
+
+#preview-canvas {
+  border-radius: 8px;
+}
+
+/* Game board canvas */
+#phone-board-canvas {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  max-width: 100%;
+}
+
+/* Column drop buttons - THE MAIN CONTROLS */
+.drop-buttons {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 12px;
+}
+
+.drop-btn {
+  flex: 1;
+  font-size: 1.4rem;
+  padding: 18px 0;
+  border-radius: 14px;
+  border: 3px solid #4CAF50;
+  background: #1a3a1a;
+  color: #4CAF50;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.drop-btn:active {
+  background: #4CAF50;
+  color: #fff;
+  transform: scale(0.95);
+}
+
+.drop-btn.disabled {
+  border-color: #555;
+  color: #555;
+  background: #1a1a2e;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 12px;
+}
+
+.action-btn {
+  flex: 1;
+  font-size: 1.2rem;
+  padding: 14px 0;
+  border-radius: 14px;
+  border: 2px solid #666;
+  background: #16213e;
+  color: #e0e0e0;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.action-btn:active {
+  background: #2a3a5e;
+  transform: scale(0.97);
+}
+
+.action-btn.undo-btn {
+  border-color: #FF9800;
+  color: #FF9800;
+}
+
+.action-btn.restart-btn {
+  border-color: #F44336;
+  color: #F44336;
+}
+
+/* Frog legend */
+.legend {
+  background: #16213e;
+  border-radius: 12px;
+  padding: 10px 14px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.legend h3 {
+  font-size: 1rem;
+  color: #FFD700;
+  margin-bottom: 8px;
+}
+
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  font-size: 0.85rem;
+}
+
+.legend-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-locked {
+  opacity: 0.3;
+}
+
+/* Game over overlay on phone */
+.game-over-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.8);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.game-over-overlay.visible {
+  display: flex;
+}
+
+.game-over-overlay h2 {
+  font-size: 2.5rem;
+  color: #F44336;
+  margin-bottom: 1rem;
+}
+
+.game-over-overlay .final-score {
+  font-size: 1.5rem;
+  color: #FFD700;
+  margin-bottom: 0.5rem;
+}
+
+.game-over-overlay .best-score-display {
+  font-size: 1.1rem;
+  color: #aaa;
+  margin-bottom: 2rem;
+}
+
+.game-over-overlay button {
+  font-size: 1.4rem;
+  padding: 16px 48px;
+  border-radius: 16px;
+  border: none;
+  background: #4CAF50;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
