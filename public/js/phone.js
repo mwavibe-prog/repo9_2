@@ -17,6 +17,13 @@ const previewCanvas2 = document.getElementById('preview-canvas-2');
 const previewCtx2 = previewCanvas2.getContext('2d');
 const previewRenderer2 = new FrogRenderer(previewCanvas2);
 
+// ── Auto-fill room code from URL (?room=ABCD) ───────────────────────
+const urlParams = new URLSearchParams(window.location.search);
+const urlRoom = urlParams.get('room');
+if (urlRoom) {
+  document.getElementById('room-code-input').value = urlRoom.toUpperCase();
+}
+
 // ── Join Screen ───────────────────────────────────────────────────────
 document.getElementById('join-btn').addEventListener('click', joinGame);
 document.getElementById('room-code-input').addEventListener('keydown', (e) => {

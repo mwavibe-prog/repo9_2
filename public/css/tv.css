@@ -9,6 +9,7 @@ body {
   width: 100vw;
 }
 
+/* ── Lobby ────────────────────────────────────────────────────────── */
 #lobby {
   display: flex;
   flex-direction: column;
@@ -16,36 +17,102 @@ body {
   justify-content: center;
   height: 100vh;
   text-align: center;
+  padding: 2vh 2vw;
+}
+
+/* Logos side by side */
+.logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3vw;
+  margin-bottom: 1.5vh;
+}
+
+.logos .logo {
+  height: 10vh;
+  max-height: 100px;
+  width: auto;
+  object-fit: contain;
 }
 
 #lobby h1 {
-  font-size: 5vw;
-  margin-bottom: 1rem;
+  font-size: 4.5vw;
+  margin-bottom: 0.5rem;
   color: #4CAF50;
 }
 
 #lobby .subtitle {
-  font-size: 2.5vw;
+  font-size: 2vw;
   color: #aaa;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Join info: QR + Room code side by side */
+.join-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4vw;
+  margin-bottom: 1.5rem;
+  background: #16213e;
+  border-radius: 24px;
+  padding: 2vh 3vw;
+}
+
+.qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-code {
+  width: 18vh;
+  max-width: 220px;
+  height: auto;
+  border-radius: 12px;
+  background: #fff;
+  padding: 4px;
+}
+
+.qr-label {
+  font-size: 1.5vw;
+  color: #aaa;
+  margin-top: 0.5rem;
+}
+
+.code-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.code-label {
+  font-size: 2vw;
+  color: #aaa;
+  margin-bottom: 0.3rem;
 }
 
 #room-code-display {
-  font-size: 10vw;
+  font-size: 8vw;
   font-weight: bold;
   letter-spacing: 0.3em;
   color: #FFD700;
-  background: #16213e;
-  padding: 0.3em 0.6em;
-  border-radius: 20px;
-  margin-bottom: 1.5rem;
   text-shadow: 0 0 20px rgba(255,215,0,0.4);
+  line-height: 1.1;
+}
+
+.join-url {
+  font-size: 1.2vw;
+  color: #6dd3f5;
+  margin-top: 0.5rem;
+  word-break: break-all;
 }
 
 #player-count {
   font-size: 2.5vw;
   color: #aaa;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 #player-names {
@@ -55,6 +122,7 @@ body {
   word-wrap: break-word;
 }
 
+/* ── Game area ────────────────────────────────────────────────────── */
 #game-area {
   display: none;
   width: 100vw;
@@ -98,6 +166,7 @@ body {
   margin-right: 8px;
 }
 
+/* Corner room code + logos during game */
 #room-code-corner {
   position: absolute;
   top: 10px;
@@ -108,4 +177,19 @@ body {
   font-size: 1.3vw;
   z-index: 10;
   color: #FFD700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.corner-logos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.corner-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
 }

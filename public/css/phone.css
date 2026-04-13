@@ -11,6 +11,21 @@ body {
   touch-action: manipulation;
 }
 
+/* ── Phone logos ──────────────────────────────────────────────────── */
+.phone-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.phone-logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
 /* ── Join Screen ─────────────────────────────────────────────────── */
 #join-screen {
   display: flex;

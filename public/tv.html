@@ -10,16 +10,40 @@
 
   <!-- Lobby: shows room code, waiting for players -->
   <div id="lobby">
+    <!-- Logos side by side -->
+    <div class="logos">
+      <img src="images/crest-logo.svg" alt="Crest Secondary" class="logo">
+      <img src="images/weeswares-logo.svg" alt="WeesWares" class="logo">
+    </div>
+
     <h1>Frog Drop</h1>
-    <p class="subtitle">Join with your phone!</p>
-    <div id="room-code-display">----</div>
+    <p class="subtitle">Scan the QR code or enter the room code on your phone!</p>
+
+    <div class="join-info">
+      <div class="qr-section">
+        <img id="qr-code" alt="QR Code" class="qr-code">
+        <p class="qr-label">Scan to join</p>
+      </div>
+      <div class="code-section">
+        <p class="code-label">Room Code</p>
+        <div id="room-code-display">----</div>
+        <p class="join-url" id="join-url"></p>
+      </div>
+    </div>
+
     <p id="player-count">Waiting for players...</p>
     <p id="player-names"></p>
   </div>
 
   <!-- Game area: canvas showing all boards -->
   <div id="game-area">
-    <div id="room-code-corner">Room: <span id="corner-code"></span></div>
+    <div id="room-code-corner">
+      <div class="corner-logos">
+        <img src="images/crest-logo.svg" alt="Crest" class="corner-logo">
+        <img src="images/weeswares-logo.svg" alt="WeesWares" class="corner-logo">
+      </div>
+      Room: <span id="corner-code"></span>
+    </div>
     <canvas id="game-canvas"></canvas>
     <div id="leaderboard">
       <h3>Leaderboard</h3>

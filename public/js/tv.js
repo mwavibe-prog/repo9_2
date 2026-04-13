@@ -26,6 +26,14 @@ function connect() {
         roomCode = msg.code;
         document.getElementById('room-code-display').textContent = msg.code;
         document.getElementById('corner-code').textContent = msg.code;
+        // QR code
+        if (msg.qrCode) {
+          document.getElementById('qr-code').src = msg.qrCode;
+        }
+        // Join URL
+        if (msg.joinUrl) {
+          document.getElementById('join-url').textContent = msg.joinUrl;
+        }
         break;
 
       case 'gameUpdate':

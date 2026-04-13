@@ -2,10 +2,13 @@ const express = require('express');
 const http = require('http');
 const { WebSocketServer } = require('ws');
 const path = require('path');
+const QRCode = require('qrcode');
 const {
   COLS, ROWS, MAX_TIER, FROG_TIERS,
   createGameState, dropFrog, undo, serializeState,
 } = require('./public/js/game-logic.js');
+
+const BASE_URL = process.env.BASE_URL || 'https://repo92-production.up.railway.app';
 
 const app = express();
 const server = http.createServer(app);
@@ -83,7 +86,26 @@ wss.on('connection', (ws) => {
         currentRoom = room;
         role = 'tv';
         room.tvClients.add(ws);
-        ws.send(JSON.stringify({ type: 'roomCreated', code: room.code }));
+        const joinUrl = `${BASE_URL}/phone.html?room=${room.code}`;
+        QRCode.toDataURL(joinUrl, {
+          width: 280,
+          margin: 2,
+          color: { dark: '#000000', light: '#ffffff' },
+        }).then(qrDataUrl => {
+          ws.send(JSON.stringify({
+            type: 'roomCreated',
+            code: room.code,
+            joinUrl,
+            qrCode: qrDataUrl,
+          }));
+        }).catch(() => {
+          ws.send(JSON.stringify({
+            type: 'roomCreated',
+            code: room.code,
+            joinUrl,
+            qrCode: null,
+          }));
+        });
         break;
       }
 
